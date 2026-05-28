@@ -3,36 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Image Generator</title>
+    <title>Inspirational Quote Generator (English + Korean)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
     <style>
       :root {
-        --bg: #f4f6ff;
-        --bg-2: #e8ecff;
+        --bg: #f6f8ff;
         --card: #ffffff;
-        --card-soft: #eef2ff;
-        --text: #171d38;
-        --muted: #55608d;
-        --primary: #5f6fff;
-        --primary-2: #39d8bc;
-        --border: #c8d1ff;
-      }
-
-      body.dark {
-        --bg: #0f1226;
-        --bg-2: #1a1f48;
-        --card: #171a35;
-        --card-soft: #1f2350;
-        --text: #f2f5ff;
-        --muted: #a9b1d6;
-        --primary: #7f8cff;
-        --primary-2: #5ef0d8;
-        --border: #2a3168;
+        --text: #1f2950;
+        --muted: #5e6b98;
+        --primary: #5a6bff;
+        --accent: #36d7b7;
+        --border: #cad3ff;
       }
 
       * {
@@ -42,282 +28,245 @@
       body {
         margin: 0;
         min-height: 100vh;
-        font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        font-family: "Inter", "Noto Sans KR", system-ui, -apple-system, sans-serif;
         color: var(--text);
-        background: radial-gradient(circle at 20% 0%, var(--bg-2) 0%, var(--bg) 55%, var(--bg) 100%);
-        line-height: 1.4;
-        transition: background 0.3s ease, color 0.3s ease;
+        background: radial-gradient(circle at top left, #e9eeff, var(--bg) 55%);
       }
 
       .container {
-        max-width: 1100px;
+        max-width: 760px;
         margin: 0 auto;
-        padding: 1.2rem;
+        padding: 1.5rem;
       }
 
-      .header-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-      }
-
-      .hero {
-        text-align: center;
-        margin: 1rem auto 1.5rem;
-      }
-
-      .hero h1 {
+      h1 {
         margin: 0;
-        font-size: clamp(1.6rem, 3vw, 2.6rem);
+        font-size: clamp(1.6rem, 3.2vw, 2.3rem);
       }
 
-      .hero p {
-        margin: 0.6rem auto 0;
+      .intro {
         color: var(--muted);
-        max-width: 62ch;
+        margin-top: 0.7rem;
+        margin-bottom: 1.3rem;
       }
 
-      .panel {
-        background: color-mix(in srgb, var(--card) 96%, black 4%);
+      .card {
+        background: var(--card);
         border: 1px solid var(--border);
         border-radius: 16px;
-        padding: 1rem;
-        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.14);
+        padding: 1.2rem;
+        box-shadow: 0 16px 32px rgba(25, 35, 89, 0.12);
       }
 
-      .controls {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 0.7rem;
-        align-items: center;
-      }
-
-      #prompt {
-        width: 100%;
-        background: var(--card-soft);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        color: var(--text);
-        font-size: 1rem;
-        padding: 0.85rem 1rem;
-        outline: none;
-      }
-
-      #prompt:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(127, 140, 255, 0.25);
-      }
-
-      @keyframes pulseGlow {
-        0% { box-shadow: 0 0 0 0 rgba(95, 240, 216, 0.35); }
-        70% { box-shadow: 0 0 0 12px rgba(95, 240, 216, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(95, 240, 216, 0); }
+      .actions {
+        display: flex;
+        gap: 0.65rem;
+        flex-wrap: wrap;
       }
 
       button {
         border: none;
         border-radius: 12px;
-        color: #0f1330;
+        padding: 0.8rem 1rem;
         cursor: pointer;
-        font-size: 1rem;
+        font-size: 0.98rem;
         font-weight: 700;
-        padding: 0.85rem 1.1rem;
-        background: linear-gradient(120deg, var(--primary), var(--primary-2));
-        transition: transform 0.2s ease, filter 0.2s ease;
-        animation: pulseGlow 2.2s infinite;
+        background: linear-gradient(120deg, var(--primary), var(--accent));
+        color: #111733;
       }
 
-      button:hover {
-        transform: translateY(-2px) scale(1.01);
-        filter: brightness(1.05);
+      .secondary {
+        background: #e8edff;
+        color: #1d2652;
       }
 
-      button:active {
-        transform: scale(0.98);
-      }
-
-      button:disabled {
-        opacity: 0.65;
-        cursor: not-allowed;
-        animation: none;
-      }
-
-      .toggle {
-        padding: 0.6rem 0.95rem;
-        font-size: 0.9rem;
-      }
-
-      .gallery-wrap {
+      .quote-box {
         margin-top: 1rem;
-      }
-
-      .gallery-head {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 0.6rem;
-        margin-bottom: 0.7rem;
-      }
-
-      .gallery-head h2 {
-        margin: 0;
-        font-size: 1.1rem;
-      }
-
-      .hint {
-        color: var(--muted);
-        font-size: 0.9rem;
-      }
-
-      .gallery {
-        display: grid;
-        gap: 0.8rem;
-        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-      }
-
-      .card {
-        background: color-mix(in srgb, var(--card) 95%, black 5%);
+        padding: 1rem;
+        border-radius: 12px;
         border: 1px solid var(--border);
-        border-radius: 12px;
-        overflow: hidden;
+        background: #fbfcff;
       }
 
-      .card img {
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        object-fit: cover;
-        display: block;
-      }
-
-      .card p {
+      blockquote {
         margin: 0;
-        padding: 0.6rem 0.7rem;
-        font-size: 0.82rem;
+        font-size: clamp(1.1rem, 2.6vw, 1.35rem);
+        font-weight: 600;
+      }
+
+      .korean {
+        margin-top: 0.75rem;
+        font-family: "Noto Sans KR", "Inter", sans-serif;
+        font-size: clamp(1.05rem, 2.4vw, 1.22rem);
+      }
+
+      .author {
+        margin-top: 0.75rem;
         color: var(--muted);
       }
 
-      .empty {
-        border: 1px dashed var(--border);
-        border-radius: 12px;
-        padding: 1.2rem;
-        color: var(--muted);
-        text-align: center;
+      .history {
+        margin-top: 1.1rem;
       }
 
-      @media (max-width: 640px) {
-        .header-row {
-          flex-direction: column;
-          align-items: stretch;
+      .history h2 {
+        margin: 0 0 0.55rem;
+        font-size: 1.05rem;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 1rem;
+      }
+
+      li {
+        margin-bottom: 0.55rem;
+      }
+
+      @media (max-width: 540px) {
+        .container {
+          padding: 1rem;
         }
 
-        .controls {
-          grid-template-columns: 1fr;
-        }
-
-        button {
+        .actions button {
           width: 100%;
         }
       }
     </style>
   </head>
-  <body class="dark">
+  <body>
     <main class="container">
-      <section class="hero">
-        <div class="header-row">
-          <h1>Simple AI Image Generator</h1>
-          <button id="themeToggle" class="toggle" aria-label="Toggle dark mode">☀️ Light Mode</button>
-        </div>
-        <p>
-          Enter a prompt, generate a unique image, and build your gallery. This demo uses Pollinations
-          to generate AI art from your text.
-        </p>
-      </section>
+      <h1>Inspirational Quote Generator</h1>
+      <p class="intro">
+        Generate motivational quotes in English and instantly view their Korean translations.
+      </p>
 
-      <section class="panel" aria-label="Image generation controls">
-        <div class="controls">
-          <input id="prompt" type="text" placeholder="e.g., Futuristic city skyline at sunset" />
-          <button id="generateBtn">Generate</button>
+      <section class="card" aria-label="Quote generator">
+        <div class="actions">
+          <button id="generateBtn" type="button">Generate New Quote</button>
+          <button id="copyBtn" type="button" class="secondary">Copy Both Lines</button>
         </div>
 
-        <div class="gallery-wrap">
-          <div class="gallery-head">
-            <h2>Image Gallery</h2>
-            <span class="hint">Newest images appear first.</span>
-          </div>
-          <div id="gallery" class="gallery" aria-live="polite"></div>
-          <div id="emptyState" class="empty">Your generated images will appear here.</div>
+        <div class="quote-box" aria-live="polite">
+          <blockquote id="englishQuote">Press “Generate New Quote” to begin.</blockquote>
+          <p id="koreanQuote" class="korean">“새로운 명언 생성” 버튼을 눌러 시작하세요.</p>
+          <p id="quoteAuthor" class="author"></p>
         </div>
+
+        <section class="history" aria-label="Recently generated quotes">
+          <h2>Recent Quotes</h2>
+          <ul id="historyList"></ul>
+        </section>
       </section>
     </main>
 
     <script>
-      const promptInput = document.getElementById("prompt");
+      const quotes = [
+        {
+          english: "Success is the sum of small efforts, repeated day in and day out.",
+          korean: "성공은 날마다 반복되는 작은 노력들의 합입니다.",
+          author: "Robert Collier"
+        },
+        {
+          english: "The future depends on what you do today.",
+          korean: "미래는 오늘 당신이 무엇을 하느냐에 달려 있습니다.",
+          author: "Mahatma Gandhi"
+        },
+        {
+          english: "Start where you are. Use what you have. Do what you can.",
+          korean: "지금 있는 곳에서 시작하고, 가진 것을 활용하며, 할 수 있는 일을 하세요.",
+          author: "Arthur Ashe"
+        },
+        {
+          english: "Believe you can and you're halfway there.",
+          korean: "할 수 있다고 믿는 순간, 이미 절반은 이룬 것입니다.",
+          author: "Theodore Roosevelt"
+        },
+        {
+          english: "It always seems impossible until it's done.",
+          korean: "해내기 전까지는 언제나 불가능해 보입니다.",
+          author: "Nelson Mandela"
+        },
+        {
+          english: "Your present circumstances don't determine where you can go; they merely determine where you start.",
+          korean: "현재의 상황은 당신의 도착지를 결정하지 않고, 단지 출발점을 정할 뿐입니다.",
+          author: "Nido Qubein"
+        },
+        {
+          english: "Dream big and dare to fail.",
+          korean: "크게 꿈꾸고, 실패할 용기도 가지세요.",
+          author: "Norman Vaughan"
+        }
+      ];
+
+      const historyLimit = 5;
+      const usedIndexes = new Set();
+      const historyItems = [];
+
       const generateBtn = document.getElementById("generateBtn");
-      const gallery = document.getElementById("gallery");
-      const emptyState = document.getElementById("emptyState");
-      const themeToggle = document.getElementById("themeToggle");
+      const copyBtn = document.getElementById("copyBtn");
+      const englishQuote = document.getElementById("englishQuote");
+      const koreanQuote = document.getElementById("koreanQuote");
+      const quoteAuthor = document.getElementById("quoteAuthor");
+      const historyList = document.getElementById("historyList");
 
-      function updateThemeButton() {
-        const isDark = document.body.classList.contains("dark");
-        themeToggle.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
-      }
-
-      themeToggle.addEventListener("click", () => {
-        document.body.classList.toggle("dark");
-        updateThemeButton();
-      });
-
-      updateThemeButton();
-
-      function renderCard(promptText, imageUrl) {
-        const card = document.createElement("article");
-        card.className = "card";
-
-        const img = document.createElement("img");
-        img.src = imageUrl;
-        img.alt = `Generated image for prompt: ${promptText}`;
-        img.loading = "lazy";
-
-        const caption = document.createElement("p");
-        caption.textContent = promptText;
-
-        card.append(img, caption);
-        gallery.prepend(card);
-        emptyState.style.display = "none";
-      }
-
-      function buildImageUrl(promptText) {
-        const seed = Math.floor(Math.random() * 1_000_000);
-        return `https://image.pollinations.ai/prompt/${encodeURIComponent(promptText)}?nologo=true&seed=${seed}&width=1024&height=1024`;
-      }
-
-      async function handleGenerate() {
-        const promptText = promptInput.value.trim();
-        if (!promptText) {
-          promptInput.focus();
-          return;
+      function pickRandomIndex() {
+        if (usedIndexes.size === quotes.length) {
+          usedIndexes.clear();
         }
 
-        generateBtn.disabled = true;
-        generateBtn.textContent = "Generating...";
+        let index = Math.floor(Math.random() * quotes.length);
+        while (usedIndexes.has(index)) {
+          index = Math.floor(Math.random() * quotes.length);
+        }
+
+        usedIndexes.add(index);
+        return index;
+      }
+
+      function renderHistory() {
+        historyList.innerHTML = "";
+
+        historyItems.forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = `${item.english} / ${item.korean}`;
+          historyList.appendChild(li);
+        });
+      }
+
+      function generateQuote() {
+        const quote = quotes[pickRandomIndex()];
+        englishQuote.textContent = `“${quote.english}”`;
+        koreanQuote.textContent = `“${quote.korean}”`;
+        quoteAuthor.textContent = `— ${quote.author}`;
+
+        historyItems.unshift(quote);
+        if (historyItems.length > historyLimit) {
+          historyItems.pop();
+        }
+
+        renderHistory();
+      }
+
+      async function copyQuote() {
+        const combined = `${englishQuote.textContent}\n${koreanQuote.textContent}\n${quoteAuthor.textContent}`;
 
         try {
-          const imageUrl = buildImageUrl(promptText);
-          renderCard(promptText, imageUrl);
-          promptInput.value = "";
-        } finally {
-          generateBtn.disabled = false;
-          generateBtn.textContent = "Generate";
+          await navigator.clipboard.writeText(combined);
+          copyBtn.textContent = "Copied!";
+          setTimeout(() => {
+            copyBtn.textContent = "Copy Both Lines";
+          }, 1200);
+        } catch {
+          copyBtn.textContent = "Copy Failed";
+          setTimeout(() => {
+            copyBtn.textContent = "Copy Both Lines";
+          }, 1500);
         }
       }
 
-      generateBtn.addEventListener("click", handleGenerate);
-      promptInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-          handleGenerate();
-        }
-      });
+      generateBtn.addEventListener("click", generateQuote);
+      copyBtn.addEventListener("click", copyQuote);
     </script>
   </body>
 </html>
